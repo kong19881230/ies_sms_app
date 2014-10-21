@@ -1,0 +1,11 @@
+*.class
+bin/classes/android/support/v13/app/package.html
+bin/dexedLibs/android-support-v4-51ff74584af55809c30ad9bf8de9e00c.jar
+bin/AndroidManifest.xml
+bin/dexedLibs/android-support-v7-appcompat-6fbd37a2f256310e2c6408d5c4f7ff4d.jar
+bin/dexedLibs/android-support-v7-appcompat-6fbd37a2f256310e2c6408d5c4f7ff4d.jar
+bin/dexedLibs/android-support-v7-appcompat-6fbd37a2f256310e2c6408d5c4f7ff4d.jar
+bin/dexedLibs/appcompat_v7-65d058f3ca84dcadc09dc9cca7bed28b.jar
+bin/jarlist.cache
+bin/R.txt
+bin/*

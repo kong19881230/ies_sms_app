@@ -1,0 +1,104 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/frame_bg"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/console_bg" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/text_ch_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/msg"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text_sys_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/msg"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white" />
+
+                 <TextView
+                     android:id="@+id/text_ip_state"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_margin="5dp"
+                     android:text="@string/msg"
+                     android:textAppearance="?android:attr/textAppearanceLarge"
+                     android:textColor="@color/white" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/getstate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GET-STATE" />
+
+        <Button
+            android:id="@+id/getch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+         
+            android:text="GET-CH" />
+
+        <Button
+            android:id="@+id/setdipalarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+            android:text="SET-DIP-ALARM" />
+
+        <Button
+            android:id="@+id/setdop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        
+            android:text="SET-DOP" />
+
+        <Button
+            android:id="@+id/setchalarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+            android:text="SET-CH-ALARM" />
+
+        <Button
+            android:id="@+id/testMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Channel Msg" />
+
+        <Button
+            android:id="@+id/testStateMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test State Msg" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,97 @@
+{
+	"customer":{
+
+					"name_cn":"",
+					"name_en":"Royal Garden Hotel"
+
+
+				},
+	"equipments":[
+					{
+						"ref_no":"CF-01",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					},{
+						"ref_no":"CF-02",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					},{
+						"ref_no":"CF-03",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					},{
+						"ref_no":"CF-04",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					},{
+						"ref_no":"CF-05",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					},{
+						"ref_no":"CF-06",
+						"phone_number":"63249331",
+						"machine":{
+							"photo":"",
+							"type": "Semi-Storage Calorifier",
+							"material":	"Stainless Steel 316L",
+							"capacity" : "1,750 Litre",
+							"pump" :"“GRUNDFOS” In-line Type",
+							"heat_exchanger" :"“SONDEX” AISI 316 Plate & EPDM gaskets",
+							"back_up_heater" :"70 kW Heating capacity",
+							"insulation": "50mm thick fiberglass & 0.8mm aluminum cladding",
+							"pressure":"10 Bar"
+						}
+					}
+
+				 ]
+}

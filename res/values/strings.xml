@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  	<string name="title">Royal Garden</string>
+    <string name="app_name">IES Mon App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="msg">Msg</string>
+    <string name="ch_state">ch_state</string>
+    <string name="am_state">am_state</string>
+    <string name="ipam_state">ipam_state</string>
+	<string name="title_section1">Status.</string>
+    <string name="title_section2">Remote</string>
+    <string name="title_section3">Setting</string>
+    <string name="user_name">username</string>
+    <string name="phone_num">phone_num</string>
+    <string name="update_status">update_status</string>
+    <string name="no_items_to_display">No items to display.</string>
+      <string name="action_next">Next</string>
+    <string name="action_finish">Finish</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_setting">setting</string>
+    <string name="action_remote">remote</string>
+</resources>

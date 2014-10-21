@@ -1,0 +1,315 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="${relativePackage}.${activityClass}" >
+
+   
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/frame_bg" >
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/calorifier" />
+
+            </FrameLayout>
+			   
+       
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/textbox_bg"
+                    android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/TextView01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="Information"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <View
+                            style="@style/Divider"
+                            android:background="@color/gray_bg" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:text="Temperature"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:text="60 C"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+              
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/textbox_bg"
+                    android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/update"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:drawableTop="@drawable/ic_action_refresh"
+                            android:text="Update" />
+
+                    </LinearLayout>
+          
+            </LinearLayout>
+        
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textbox_bg"
+                android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Alarm Indication"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_height="2dp"
+                        android:background="@color/gray_bg" />
+
+			 <LinearLayout
+			     android:layout_width="match_parent"
+			     android:layout_height="wrap_content"
+			     android:layout_marginTop="5dp" >
+
+			     <ImageView
+			         android:id="@+id/heaterStep1"
+			         android:layout_width="25dp"
+			         android:layout_height="25dp"
+			         android:layout_marginBottom="5dp"
+			         android:layout_marginLeft="10dp"
+			         android:layout_marginRight="10dp"
+			         android:layout_marginTop="5dp"
+			         android:src="@drawable/safe_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Heater Step 1"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                    
+			</LinearLayout>
+			 <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+			     <ImageView
+			         android:id="@+id/heaterStep2"
+			         android:layout_width="25dp"
+			         android:layout_height="25dp"
+			         android:layout_marginBottom="5dp"
+			         android:layout_marginLeft="10dp"
+			         android:layout_marginRight="10dp"
+			         android:layout_marginTop="5dp"
+			         android:src="@drawable/safe_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Heater Step 2"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			</LinearLayout>
+			
+			<LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/heaterStep3"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Heater Step 3"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+                
+				<LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/pumpRunning"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Pump Running"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/lowLevelAlarm"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Low Level Alarm"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/highTempAlarm"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="High Temp. Alarm"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/pumpFaultAlarm"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Pump Fault Alarm"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+				<ImageView
+				    android:id="@+id/lossOfPhase"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:layout_marginBottom="10dp"
+				    android:layout_marginLeft="10dp"
+				    android:layout_marginRight="10dp"
+				    android:layout_marginTop="5dp"
+				    android:src="@drawable/danger_icon" />
+
+                    <TextView
+                        android:id="@+id/radioButton8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Loss of Phase"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+           </LinearLayout>
+
+          </LinearLayout>
+    </ScrollView>
+
+   
+</FrameLayout>
