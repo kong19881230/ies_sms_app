@@ -104,33 +104,36 @@ public class LoginActivity extends ActionBarActivity {
                // getting product details by making HTTP request
                JSONObject json = jsonParser.makeHttpRequest(
                       LOGIN_URL, "POST", params);
-
+               if(json!=null){
                // check your log for json response
-               Log.d("Login attempt", json.toString());
-
-      	    	SharedPreferences sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
-      	    	SharedPreferences.Editor editor = sharedPref.edit();
-               // json success tag
-               success = json.getInt(TAG_SUCCESS);
-               if (success == 200) {
-                   Log.d("Login Successful!", json.toString());
-                   
-		    	    	editor.putString(getString(R.string.user_name), username);
-		    	    	editor.putString(getString(R.string.token), json.getString(TAG_TOKEN));
+	               Log.d("Login attempt", json.toString());
+	
+	      	    	SharedPreferences sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
+	      	    	SharedPreferences.Editor editor = sharedPref.edit();
+	               // json success tag
+	               success = json.getInt(TAG_SUCCESS);
+	               if (success == 200) {
+	                   Log.d("Login Successful!", json.toString());
+	                   
+			    	    	editor.putString(getString(R.string.user_name), username);
+			    	    	editor.putString(getString(R.string.token), json.getString(TAG_TOKEN));
+			    	    	editor.commit();
+	                   
+	                   
+	                   Intent i = new Intent(LoginActivity.this, EquipementListActivity.class);
+	                   
+	                   finish();
+	                   startActivity(i);
+	                   return json.getString(TAG_MESSAGE);
+	               }else{
+	            	   editor.putString(getString(R.string.user_name), "");
+		    	    	editor.putString(getString(R.string.token), "");
 		    	    	editor.commit();
-                   
-                   
-                   Intent i = new Intent(LoginActivity.this, EquipementListActivity.class);
-                   
-                   finish();
-                   startActivity(i);
-                   return json.getString(TAG_MESSAGE);
+	                   Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+	                   return json.getString(TAG_MESSAGE);      
+	               }
                }else{
-            	   editor.putString(getString(R.string.user_name), "");
-	    	    	editor.putString(getString(R.string.token), "");
-	    	    	editor.commit();
-                   Log.d("Login Failure!", json.getString(TAG_MESSAGE));
-                   return json.getString(TAG_MESSAGE);      
+            	   return "No Network Connection"; 
                }
            } catch (JSONException e) {
                e.printStackTrace();
@@ -140,11 +143,12 @@ public class LoginActivity extends ActionBarActivity {
        /**
         * After completing background task Dismiss the progress dialog
         * **/
-       protected void onPostExecute(String file_url) {
+       @Override
+       protected void onPostExecute(Object result) {
            // dismiss the dialog once product deleted
-           pDialog.dismiss();
-           if (file_url != null){
-               Toast.makeText(LoginActivity.this, file_url, Toast.LENGTH_LONG).show();
+          pDialog.dismiss();
+           if (result != null){
+               Toast.makeText(LoginActivity.this, result.toString(), Toast.LENGTH_LONG).show();
            }
        }
 
