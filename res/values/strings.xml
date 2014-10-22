@@ -12,6 +12,7 @@
     <string name="title_section2">Remote</string>
     <string name="title_section3">Setting</string>
     <string name="user_name">username</string>
+    <string name="token">token</string>
     <string name="phone_num">phone_num</string>
     <string name="update_status">update_status</string>
     <string name="no_items_to_display">No items to display.</string>

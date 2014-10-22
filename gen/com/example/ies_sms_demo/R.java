@@ -1371,24 +1371,25 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
-        public static final int action_finish=0x7f0b001c;
-        public static final int action_next=0x7f0b001b;
-        public static final int action_previous=0x7f0b001d;
-        public static final int action_remote=0x7f0b001f;
-        public static final int action_setting=0x7f0b001e;
+        public static final int action_finish=0x7f0b001d;
+        public static final int action_next=0x7f0b001c;
+        public static final int action_previous=0x7f0b001e;
+        public static final int action_remote=0x7f0b0020;
+        public static final int action_setting=0x7f0b001f;
         public static final int am_state=0x7f0b0012;
         public static final int app_name=0x7f0b000e;
         public static final int ch_state=0x7f0b0011;
         public static final int hello_world=0x7f0b000f;
         public static final int ipam_state=0x7f0b0013;
         public static final int msg=0x7f0b0010;
-        public static final int no_items_to_display=0x7f0b001a;
-        public static final int phone_num=0x7f0b0018;
+        public static final int no_items_to_display=0x7f0b001b;
+        public static final int phone_num=0x7f0b0019;
         public static final int title=0x7f0b000d;
         public static final int title_section1=0x7f0b0014;
         public static final int title_section2=0x7f0b0015;
         public static final int title_section3=0x7f0b0016;
-        public static final int update_status=0x7f0b0019;
+        public static final int token=0x7f0b0018;
+        public static final int update_status=0x7f0b001a;
         public static final int user_name=0x7f0b0017;
     }
     public static final class style {
