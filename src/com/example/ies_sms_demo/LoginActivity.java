@@ -121,6 +121,7 @@ public class LoginActivity extends ActionBarActivity {
 	                   
 	                   
 	                   Intent i = new Intent(LoginActivity.this, EquipementListActivity.class);
+	                   i.putExtra("isRefresh", true);
 	                   
 	                   finish();
 	                   startActivity(i);

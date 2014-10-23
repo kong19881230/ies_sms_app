@@ -23,8 +23,9 @@ import android.widget.Toast;
 
 import com.example.ies_sms_demo.LoginActivity.AttemptLogin;
 import com.example.ies_sms_demo.http.JSONParser;
-import com.example.ies_sms_demo.model.Equipement;
-import com.example.ies_sms_demo.model.EquipementHelper;
+import com.example.ies_sms_demo.model.Equipment;
+import com.example.ies_sms_demo.model.EquipmentHelper;
+import com.example.ies_sms_demo.model.Project;
 
 
 public class EquipementListActivity extends ListActivity {
@@ -36,22 +37,31 @@ public class EquipementListActivity extends ListActivity {
 	    private static final String TAG_MESSAGE = "message";
 	private static final String GET_EQUIPEMENT_URL = "http://uniquecode.net/job/ms/get_user_equipement.php";
 	private EquipementItemAdapter e_adapter;
-	private ArrayList<Equipement> equipements = new ArrayList<Equipement>();
+	private ArrayList<Project> projects=new ArrayList<Project>();
+  
+	private ArrayList<Equipment> equipements = new ArrayList<Equipment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     
-        equipements= EquipementHelper.getEquipementList( getResources());
+        sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
+        String projectListStr = sharedPref.getString(getString(R.string.project_list), "");
+        projects= EquipmentHelper.getProjectList( projectListStr);
         //Remove notification bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setTitle("Royal garden");
+        if(projects.size()>0){
+	        setTitle(projects.get(0).name_en);
+	        equipements=(ArrayList<Equipment>) projects.get(0).equipments;
+        }
         setContentView(R.layout.equipements);
         getActionBar().setIcon(
         		   new ColorDrawable(getResources().getColor(android.R.color.transparent)));    
+      
         e_adapter = new EquipementItemAdapter(this, R.id.text_view, equipements);
         setListAdapter(e_adapter);
-        sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
-        new GetUserEquipement().execute();
+        boolean isRefresh=getIntent().getBooleanExtra("isRefresh", false);
+        if(isRefresh){
+        	new GetUserEquipement().execute();
+        }
     }
     @Override
     protected void onListItemClick (ListView l, View v, int position, long id) {
@@ -104,23 +114,31 @@ public class EquipementListActivity extends ListActivity {
 	               JSONObject json = jsonParser.makeHttpRequest(
 	                      GET_EQUIPEMENT_URL, "POST", params);
 	
-	               // check your log for json response
-	               Log.d("Login attempt", json.toString());
+	             
 	
 	      	    	
 	      	    	SharedPreferences.Editor editor = sharedPref.edit();
 	               // json success tag
 	      	    	if(json!=null){
+		      	    	  // check your log for json response
+		 	               Log.d("Login attempt", json.toString());
 			               success = json.getInt(TAG_SUCCESS);
 			               if (success == 200) {
 			                   Log.d("Login Successful!", json.toString());
 			                   
-					    	    	editor.putString(getString(R.string.user_name), username);
-					    	    	editor.putString(getString(R.string.token), json.getString(TAG_TOKEN));
+					    	    	editor.putString(getString(R.string.project_list), json.toString());			
 					    	    	editor.commit();
 			                   
-			                   
-			                 
+					    	    	projects= EquipmentHelper.getProjectList( json.toString());
+					    	        //Remove notification bar
+//					    	        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+					    	        if(projects.size()>0){
+					    		        //setTitle(projects.get(0).name_en);
+					    		        equipements=(ArrayList<Equipment>) projects.get(0).equipments;
+					    		        
+						    	        
+					    	        }
+					    	      
 			                   return json.getString(TAG_MESSAGE);
 			               }else{
 			            
@@ -143,6 +161,9 @@ public class EquipementListActivity extends ListActivity {
        @Override
        protected void onPostExecute(Object result) {
            // dismiss the dialog once product deleted
+    	   e_adapter.clear();
+    	   e_adapter.addAll(equipements);
+    	   e_adapter.notifyDataSetChanged();
            pDialog.dismiss();
            if (result != null){
                Toast.makeText(EquipementListActivity.this, result.toString(), Toast.LENGTH_LONG).show();

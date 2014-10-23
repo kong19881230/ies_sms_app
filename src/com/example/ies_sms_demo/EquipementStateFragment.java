@@ -34,7 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ies_sms_demo.model.Equipement;
+import com.example.ies_sms_demo.model.Equipment;
 import com.example.ies_sms_demo.model.Machine;
 
 public class EquipementStateFragment extends Fragment {
@@ -49,11 +49,11 @@ public class EquipementStateFragment extends Fragment {
 	public String[] ipamStates;
 	public Timer myTimer;
 	public Button update;
-	public Equipement equipement;
+	public Equipment equipement;
 	public ImageView img;
 	private int mPageNumber;
 	
-	public static EquipementStateFragment create(int pageNumber, Context context,Equipement equipement) {
+	public static EquipementStateFragment create(int pageNumber, Context context,Equipment equipement) {
 
 		EquipementStateFragment fragment = new EquipementStateFragment();
 		Bundle args = new Bundle();
@@ -64,7 +64,7 @@ public class EquipementStateFragment extends Fragment {
 		return fragment;
 	}
 
-	private void setEquipement(Equipement equipement2) {
+	private void setEquipement(Equipment equipement2) {
 		equipement=equipement2;
 		
 	}

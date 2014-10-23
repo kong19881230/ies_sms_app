@@ -42,6 +42,7 @@ public class SplashActivity extends ActionBarActivity {
 	            	   }else{
 	                    // start the home activity 
 		                    Intent intent = new Intent(SplashActivity.this, EquipementListActivity.class);
+		                    intent.putExtra("isRefresh", true);
 		                    SplashActivity.this.startActivity(intent);
 		               
 	            	   }

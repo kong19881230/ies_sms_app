@@ -1384,6 +1384,7 @@ containing a value of this type.
         public static final int msg=0x7f0b0010;
         public static final int no_items_to_display=0x7f0b001b;
         public static final int phone_num=0x7f0b0019;
+        public static final int project_list=0x7f0b0021;
         public static final int title=0x7f0b000d;
         public static final int title_section1=0x7f0b0014;
         public static final int title_section2=0x7f0b0015;

@@ -20,20 +20,21 @@ public class Machine  implements Serializable{
 	public final String TAG_INSULATION="insulation";
 	public final String TAG_PRESSURE="pressure";
 	public Machine(JSONObject json){
-	  try {
-		photo=json.getString(TAG_PHOTO);
-		type=json.getString(TAG_TYPE);
-		material=json.getString(TAG_MATERIAL);
-		capacity=json.getString(TAG_CAPACITY);
-		pump=json.getString(TAG_PUMP);
-		heatExchanger=json.getString(TAG_HEAT_EXCHANGER);
-		backUpHeater=json.getString(TAG_BACK_UP_HEATER);
-		insulation=json.getString(TAG_INSULATION);
-		pressure=json.getString(TAG_PRESSURE);
-	  } catch (JSONException e) {
-          e.printStackTrace();
-      }
+//	  try {
+//		photo=json.getString(TAG_PHOTO);
+//		type=json.getString(TAG_TYPE);
+//		material=json.getString(TAG_MATERIAL);
+//		capacity=json.getString(TAG_CAPACITY);
+//		pump=json.getString(TAG_PUMP);
+//		heatExchanger=json.getString(TAG_HEAT_EXCHANGER);
+//		backUpHeater=json.getString(TAG_BACK_UP_HEATER);
+//		insulation=json.getString(TAG_INSULATION);
+//		pressure=json.getString(TAG_PRESSURE);
+//	  } catch (JSONException e) {
+//          e.printStackTrace();
+//      }
 	}
+
 	public int photoId;
 	public String photo;
 	public String type;

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Equipement  implements Serializable {
+public class Equipment  implements Serializable {
 	/**
 	 * 
 	 */
@@ -14,11 +14,11 @@ public class Equipement  implements Serializable {
 	public final String TAG_REF_NO="ref_no";
 	public final String TAG_PHONE_NUMBER="phone_number";
 	public final String TAG_MACHINE="machine";
-	public Equipement(JSONObject json){
+	public Equipment(JSONObject json){
 		  try {
 			  refNo=json.getString(TAG_REF_NO);
 			  phoneNumber=json.getString(TAG_PHONE_NUMBER);
-			  machine=new Machine(json.getJSONObject(TAG_MACHINE));
+			  machine=new Machine(json);
 		
 		  } catch (JSONException e) {
 	          e.printStackTrace();
@@ -26,5 +26,6 @@ public class Equipement  implements Serializable {
 		}
 	public String refNo;
 	public String phoneNumber;
+	public int photoId;
 	public Machine machine;
 }

@@ -3,7 +3,7 @@ package com.example.ies_sms_demo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.ies_sms_demo.model.Equipement;
+import com.example.ies_sms_demo.model.Equipment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class EquipementItemAdapter extends ArrayAdapter<Equipement> {
-	private ArrayList<Equipement> objects;
+public class EquipementItemAdapter extends ArrayAdapter<Equipment> {
+	private ArrayList<Equipment> objects;
 	public EquipementItemAdapter(Context context, int textViewResourceId,
-			ArrayList<Equipement> objects) {
+			ArrayList<Equipment> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
 	}
@@ -40,7 +40,7 @@ public class EquipementItemAdapter extends ArrayAdapter<Equipement> {
 		 * 
 		 * Therefore, i refers to the current Item object.
 		 */
-		Equipement i = objects.get(position);
+		Equipment i = objects.get(position);
 
 		if (i != null) {
 
@@ -53,16 +53,16 @@ public class EquipementItemAdapter extends ArrayAdapter<Equipement> {
 			
 			if(photo!=null){
 			photo.setImageDrawable(v.getResources().getDrawable(
-					i.machine.photoId));
+					i.photoId));
 			}
 			// check to see if each individual textview is null.
 			// if not, assign some text!
 			if (refNo != null){
 				refNo.setText("Ref No: "+i.refNo);
 			}
-			if (type != null){
-				type.setText("Equipement: "+i.machine.type);
-			}
+//			if (type != null){
+//				type.setText("Equipement: "+i.machine.type);
+//			}
 		
 		}
 
