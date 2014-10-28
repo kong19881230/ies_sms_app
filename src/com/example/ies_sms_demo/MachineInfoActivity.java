@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ies_sms_demo.model.Equipment;
 import com.example.ies_sms_demo.model.Machine;
 
 
@@ -20,10 +21,10 @@ public class MachineInfoActivity extends ActionBarActivity {
       
         //Remove notification bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Machine machine= (Machine) getIntent().getSerializableExtra("Machine");
-       
+        Equipment equipment= (Equipment) getIntent().getSerializableExtra("Equipement");
+        Machine machine=equipment.machine;
         setContentView(R.layout.machine_info);
-        setTitle(machine.type);
+        setTitle(machine.modelId);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView img = (ImageView) findViewById(R.id.photo);
 	   

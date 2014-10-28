@@ -97,15 +97,14 @@ public class EquipementStateFragment extends Fragment {
 	       if(img!=null&&equipement!=null &&equipement.machine!=null){
 	        img.setOnClickListener(new OnClickListener() {
 	            public void onClick(View v) {
-	            	  Machine m=equipement.machine;
 	                  Intent intent = new Intent(rootContext, MachineInfoActivity.class);
-	                  intent.putExtra("Machine", m);
+	                  intent.putExtra("Equipement", equipement);
 	                  startActivity(intent);
 	            }
 	        });
 	        
 	        img.setImageDrawable(getResources().getDrawable(
-					equipement.machine.photoId));
+					equipement.photoId));
 	       }
 	       
 	     
