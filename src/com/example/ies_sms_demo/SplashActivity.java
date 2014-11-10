@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -14,13 +15,15 @@ public class SplashActivity extends ActionBarActivity {
 	 private boolean mIsBackButtonPressed;
 	    private static final int SPLASH_DURATION = 3000; //6 seconds
 	    private Handler myhandler;
-	  
+	    @Override
 	    public void onCreate(Bundle savedInstanceState) 
 	    {
 	    	
 	    	 super.onCreate(savedInstanceState);
 	        setContentView(R.layout.splash_screen);
 	        ActionBar actionBar = getActionBar();
+	        getActionBar().setIcon(
+	     		   new ColorDrawable(getResources().getColor(android.R.color.transparent))); 
 	        actionBar.hide();
 	        myhandler = new Handler();
 	          // run a thread to start the home screen

@@ -16,31 +16,46 @@
 
 package com.example.ies_sms_demo;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Timer;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ies_sms_demo.ItemAdapter.AlarmIndicatorItemAdapter;
+import com.example.ies_sms_demo.ItemAdapter.EquipementItemAdapter;
+import com.example.ies_sms_demo.ItemAdapter.TextIndicatorItemAdapter;
+import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.model.Equipment;
+import com.example.ies_sms_demo.model.Indicator;
 import com.example.ies_sms_demo.model.Machine;
+import com.example.ies_sms_demo.model.UpdateState;
+import com.example.ies_sms_demo.receiver.PopMessage;
 
 public class EquipementStateFragment extends Fragment {
 
 	public static final String ARG_PAGE = "page";
-
+	private ProgressDialog pDialog;
 	private Context rootContext;
 	private ViewGroup rootView;
 	public String updateState;
@@ -50,28 +65,40 @@ public class EquipementStateFragment extends Fragment {
 	public Timer myTimer;
 	public Button update;
 	public Equipment equipement;
+	public ArrayList<Indicator> textIndicator=new ArrayList<Indicator>();
+	public ArrayList<Indicator> amIndicator=new ArrayList<Indicator>();
+	public ListView textList;
+	public TextIndicatorItemAdapter text_adapter;
+	public ListView amList;
+	public AlarmIndicatorItemAdapter am_adapter;
 	public ImageView img;
 	private int mPageNumber;
-	
-	public static EquipementStateFragment create(int pageNumber, Context context,Equipment equipement) {
+	public int pIndex;
+	public static EquipementStateFragment create(int pageNumber,int pIndex, Context context,Equipment equipement) {
 
 		EquipementStateFragment fragment = new EquipementStateFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_PAGE, pageNumber);
 		fragment.setArguments(args);
-		fragment.setRootContext(context);
+		fragment.setRootContext(context,pIndex);
 		fragment.setEquipement(equipement);
 		return fragment;
 	}
 
 	private void setEquipement(Equipment equipement2) {
 		equipement=equipement2;
-		
+		for(Indicator i :equipement.indicators){
+			if(i.style_type.equals(Indicator.STYLE_TYPE_NB)){
+				textIndicator.add(i);
+			}else if(i.style_type.equals(Indicator.STYLE_TYPE_NS)||i.style_type.equals(Indicator.STYLE_TYPE_OS)){
+				amIndicator.add(i);
+			}
+		}
 	}
 
-	public void setRootContext(Context context) {
+	public void setRootContext(Context context,int pIndex) {
 		rootContext = context;
-
+		this.pIndex=pIndex;
 	}
 
 	public EquipementStateFragment() {
@@ -89,6 +116,9 @@ public class EquipementStateFragment extends Fragment {
 		// Inflate the layout containing a title and body text.
 		rootView = (ViewGroup) inflater.inflate(R.layout.tab_state, container,
 				false);
+		amList=(ListView)rootView.findViewById(R.id.ip_list);
+		textList=(ListView)rootView.findViewById(R.id.text_list);
+
 		parseState();
 
 		// TextView t=(TextView)rootView.findViewById(R.id.msg);
@@ -99,12 +129,18 @@ public class EquipementStateFragment extends Fragment {
 	            public void onClick(View v) {
 	                  Intent intent = new Intent(rootContext, MachineInfoActivity.class);
 	                  intent.putExtra("Equipement", equipement);
+	                  intent.putExtra("eIndex",mPageNumber );
+	                  intent.putExtra("pIndex", pIndex);
 	                  startActivity(intent);
 	            }
 	        });
-	        
-	        img.setImageDrawable(getResources().getDrawable(
-					equipement.photoId));
+	        ImageLoader imgLoader = new ImageLoader(rootContext);
+			  
+	        if(equipement.photo!=null &&!equipement.photo.isEmpty()){
+	        	imgLoader.DisplayImage(EquipementItemAdapter.EQUIPMENT_PHOTO_URL+equipement.photo, R.drawable.ic_action_refresh, img);
+	        }
+
+	      
 	       }
 	       
 	     
@@ -118,32 +154,28 @@ public class EquipementStateFragment extends Fragment {
 				public void onClick(View v) {
 					if(updateState
 					.equals(UpdateState.IDLE)){
-					SharedPreferences sharedPref = rootContext
+						SharedPreferences sharedPref = rootContext
 							.getSharedPreferences("share_data",
 									Context.MODE_PRIVATE);
-					String phoneNum = sharedPref.getString(
-							getString(R.string.phone_num), "");
-					if (!phoneNum.equals("")) {
-
-						getState(v);
-					
-						update.setText("Loading...\nCancel");
-						updateState = UpdateState.GET_STATE;
-						SharedPreferences.Editor editor = sharedPref.edit();
-						editor.putString(getString(R.string.update_status),
-								UpdateState.GET_STATE);
-						editor.commit();
-					} else {
-						Context context = rootContext.getApplicationContext();
-						int duration = Toast.LENGTH_LONG;
-						CharSequence text;
-						text = "Please set phone number first!!!";
-						Toast toast = Toast.makeText(context, text, duration);
-						toast.show();
-
-					}
-					}else{
-						cancelMessage();
+						if (equipement.phoneNumber!=null&&!equipement.phoneNumber.equals("")) {
+	
+							getState(v);
+						
+							showLoadingBar();
+							updateState = UpdateState.GET_STATE;
+							SharedPreferences.Editor editor = sharedPref.edit();
+							editor.putString(parseStrByID(R.string.update_status),
+									UpdateState.GET_STATE);
+							editor.commit();
+						} else {
+							Context context = rootContext.getApplicationContext();
+							int duration = Toast.LENGTH_LONG;
+							CharSequence text;
+							text = "Please set phone number first!!!";
+							Toast toast = Toast.makeText(context, text, duration);
+							toast.show();
+	
+						}
 					}
 				}
 			});
@@ -154,11 +186,11 @@ public class EquipementStateFragment extends Fragment {
 
 			if (updateState.equals(UpdateState.IDLE)) {
 			
-				update.setText("Update");
+				hideLoadingBar();
 
 			} else {
-				update.setText("Loading...\nCancel");
-
+				showLoadingBar();
+				
 			}
 			
 		}
@@ -176,17 +208,41 @@ public class EquipementStateFragment extends Fragment {
 		parseState();
 		if (update != null) {
 			if (updateState.equals(UpdateState.IDLE)) {
-			
-				update.setText("Update");
+				
+				hideLoadingBar();
 
 			} else {
+				showLoadingBar();
 				
-				update.setText("Loading...\nClick to cancel");
 			}
 		}
 		// TextView t=(TextView)rootView.findViewById(R.id.msg);
 		// t.setText(stateStr);
 
+	}
+	private void showLoadingBar() {
+		
+		if(pDialog==null||!pDialog.isShowing()){
+		pDialog = new ProgressDialog(rootView.getContext());
+         pDialog.setMessage("Loading...");
+         pDialog.setIndeterminate(false);
+         pDialog.setCancelable(true);
+         pDialog.setOnCancelListener( new OnCancelListener(){
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				// TODO Auto-generated method stub
+				cancelMessage();
+				 hideLoadingBar();
+			}});
+         pDialog.show();
+		}
+	}
+	
+	private void hideLoadingBar() {
+		if(pDialog!=null){
+		 pDialog.dismiss();
+		}
 	}
 	
 
@@ -205,11 +261,10 @@ public class EquipementStateFragment extends Fragment {
 			SharedPreferences.Editor editor = sharedPref
 					.edit();
 			editor.putString(
-					getString(R.string.update_status),
+					getUpdateStatusStr(),
 					UpdateState.IDLE);
 			editor.commit();
 			updateState = UpdateState.IDLE;
-			update.setText("Update");
 	    }
 
 	/**
@@ -223,13 +278,13 @@ public class EquipementStateFragment extends Fragment {
 	public String[] ipStateKeys={"8","7","6","5","4","3","2","1","0"};
 	public void parseState() {
 
-		if (rootContext != null) {
+		if (rootContext != null&&equipement.phoneNumber!=null&&!equipement.phoneNumber.isEmpty()) {
 			SharedPreferences sharedPref = rootContext.getSharedPreferences(
 					"share_data", Context.MODE_PRIVATE);
 			updateState = sharedPref.getString(
-					getString(R.string.update_status), "");
+					getUpdateStatusStr(), "");
 			String chStateStr = sharedPref.getString(
-					getString(R.string.ch_state), "");
+					getCHStateStr(), "");
 
 			if (chStateStr != "") {
 				chStateHash = new Hashtable<String, String>();
@@ -244,10 +299,9 @@ public class EquipementStateFragment extends Fragment {
 						}
 					}
 				}
-				updateCH();
 			}
 			String amStateStr = sharedPref.getString(
-					getString(R.string.am_state), "");
+					getAmStateStr(), "");
 			if (amStateStr != "") {
 				amStateHash = new Hashtable<String, String>();
 				amStateStr=amStateStr.replaceAll("\\s+","");
@@ -261,11 +315,10 @@ public class EquipementStateFragment extends Fragment {
 						}
 					}
 				}
-				updateAM();
 			}
 
 			String ipamStateStr = sharedPref.getString(
-					getString(R.string.ipam_state), "");
+					getIPAMStr(), "");
 			ipamStates=new String[8];
 			if (ipamStateStr != "") {
 				ipamStateStr=ipamStateStr.replaceAll("\\s+","");
@@ -280,105 +333,126 @@ public class EquipementStateFragment extends Fragment {
 					}
 				}
 
-				updateIPAM();
 			}
-
+			updateState();
 			if (updateState.equals(UpdateState.HAS_STATE)) {
 
 				updateState = UpdateState.GET_CH;
 				getCH(null);
 				SharedPreferences.Editor editor = sharedPref.edit();
-				editor.putString(getString(R.string.update_status),
+				editor.putString(getUpdateStatusStr(),
 						UpdateState.GET_CH);
 				editor.commit();
 			} else if (updateState.equals(UpdateState.HAS_CH)) {
 
 				updateState = UpdateState.IDLE;
 				SharedPreferences.Editor editor = sharedPref.edit();
-				editor.putString(getString(R.string.update_status),
+				editor.putString(getUpdateStatusStr(),
 						UpdateState.IDLE);
 				editor.commit();
 			} else if (updateState.equals("")) {
 				updateState = UpdateState.IDLE;
 				SharedPreferences.Editor editor = sharedPref.edit();
-				editor.putString(getString(R.string.update_status),
+				editor.putString(getUpdateStatusStr(),
 						UpdateState.IDLE);
 				editor.commit();
 			}
+			 am_adapter = new AlarmIndicatorItemAdapter(rootContext, R.id.text_view, amIndicator);
+		     amList.setAdapter(am_adapter);
+		     ViewGroup.LayoutParams params = amList.getLayoutParams();
+		     params.height =Dp2Px(rootContext, amIndicator.size()*36);
+		     amList.setLayoutParams(params);
+		     text_adapter=new TextIndicatorItemAdapter(rootContext, R.id.text_view,	 textIndicator);
+		     textList.setAdapter(text_adapter);
+		     ViewGroup.LayoutParams params1 = textList.getLayoutParams();
+		     params1.height =Dp2Px(rootContext, textIndicator.size()*36);
+		     textList.setLayoutParams(params1);
+		     
 		}
 	}
-	public int[] alarms={R.id.heaterStep1,R.id.heaterStep2,R.id.heaterStep3,R.id.pumpRunning,R.id.lowLevelAlarm,R.id.highTempAlarm,R.id.pumpFaultAlarm,R.id.lossOfPhase};
+	public int Dp2Px(Context context, float dp) { 
+	    final float scale = context.getResources().getDisplayMetrics().density; 
+	    return (int) (dp * scale + 0.5f); 
+	}
+
+	private String getIPAMStr() {
+		return parseStrByID(R.string.ipam_state);
+	}
+	private String parseStrByID(int id){
+		return getString(id)+"_"+equipement.phoneNumber;
+	}
+	private String getCHStateStr() {
+		return parseStrByID(R.string.ch_state);
+	}
+
+	private String getAmStateStr() {
+		return parseStrByID(R.string.am_state);
+	}
+
+	private String getUpdateStatusStr() {
+		return parseStrByID(R.string.update_status);
+	}
+//	public int[] alarms={R.id.heaterStep1,R.id.heaterStep2,R.id.heaterStep3,R.id.pumpRunning,R.id.lowLevelAlarm,R.id.highTempAlarm,R.id.pumpFaultAlarm,R.id.lossOfPhase};
 	public void updateIPAM() {
-		if(ipamStates!=null &&ipamStates.length==alarms.length){
-		for(int i=0;i<4;i++){
-		if (ipamStates[i].contains("Close")) {
-
-			ImageView tempAlarm = (ImageView) rootView
-					.findViewById(alarms[i]);
-			tempAlarm.setImageDrawable(getResources().getDrawable(
-					R.drawable.on));
-		} else {
-			ImageView tempAlarm = (ImageView) rootView
-					.findViewById(alarms[i]);
-			tempAlarm.setImageDrawable(getResources().getDrawable(
-					R.drawable.off));
-		}
-		}
-		for(int i=4;i<alarms.length;i++){
-			if (ipamStates[i].contains("Close")) {
-
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.danger_icon));
-			} else {
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.safe_icon));
+		if(ipamStates!=null &&ipamStates.length==8){
+			for(int i=0;i<amIndicator.size();i++){
+				char state=ipamStates[Integer.parseInt(amIndicator.get(i).channel)-1].charAt(0);
+				amIndicator.get(i).state=""+state;
+				
 			}
-		}
 		}
 	}
 	
-	public void updateAM() {
-		String chs = amStateHash.get("IP\\(1\\-8\\)");
-		if(chs!=null&& chs.length()==alarms.length){
-		for(int i=0;i<4;i++){
-			if (chs.charAt(i) == 'O') {
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.off));
-			} else {
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.on));
+	public void updateState() {
+		String ips =null;
+		String chs=null;
+		if(amStateHash!=null){
+			ips = amStateHash.get("IP\\(1\\-8\\)");
+		}
+		if(chStateHash!=null){
+			 chs =chStateHash.get("CHS");
+		}
+		
+//		TextView t = (TextView) rootView.findViewById(R.id.temperature);
+//		if(t!=null &&c1!=""){
+//			t.setText(c1);
+//		}
+		for(int i=0;i<textIndicator.size();i++){
+			int currentChannel=Integer.parseInt(textIndicator.get(i).channel);
+			if(textIndicator.get(i).type.equals(Indicator.TYPE_CH)&&chStateHash!=null){
+				String text =chStateHash.get("C"+currentChannel);
+				textIndicator.get(i).text=text;
 			}
 		}
-		for(int i=4;i<alarms.length;i++){
-			if (chs.charAt(i) == 'O') {
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.safe_icon));
-			} else {
-				ImageView tempAlarm = (ImageView) rootView
-						.findViewById(alarms[i]);
-				tempAlarm.setImageDrawable(getResources().getDrawable(
-						R.drawable.danger_icon));
+		
+		for(int i=0;i<amIndicator.size();i++){
+			int currentChannel=Integer.parseInt(amIndicator.get(i).channel)-1;
+			if(amIndicator.get(i).type.equals(Indicator.TYPE_CH)&&chs!=null&& chs.length()==8){
+					
+					char state=chs.charAt(currentChannel);
+					amIndicator.get(i).state=""+state;
+				
 			}
-		}
+			if(amIndicator.get(i).type.equals(Indicator.TYPE_IP)&&ips!=null&& ips.length()==8){
+				
+					char state=ips.charAt(currentChannel);
+					amIndicator.get(i).state=""+state;
+				
+			}
+			if(amIndicator.get(i).type.equals(Indicator.TYPE_IP)&&ipamStates!=null  &&ipamStates.length==8){
+				
+				String state=ipamStates[currentChannel]!=null&&!ipamStates[currentChannel].isEmpty()?(""+ipamStates[currentChannel].charAt(0)):"";
+				if(!state.isEmpty()){
+					amIndicator.get(i).state=state;
+				}
+			
+			}
+			
 		}
 	}
 
 	public void updateCH() {
-		String c1 = chStateHash.get("C1");
-		TextView t = (TextView) rootView.findViewById(R.id.temperature);
-		if(t!=null &&c1!=""){
-			t.setText(c1);
-		}
+		
 	}
 
 	public void getCH(View v) {
@@ -392,17 +466,48 @@ public class EquipementStateFragment extends Fragment {
 	}
 
 	private void sendRequest(String instruction) {
-		SharedPreferences sharedPref = rootContext.getSharedPreferences(
-				"share_data", Context.MODE_PRIVATE);
-		String phoneNum = sharedPref.getString(getString(R.string.phone_num),
-				"");
+	
+		String phoneNum = equipement.phoneNumber;
 		Context context = rootContext.getApplicationContext();
 		int duration = Toast.LENGTH_LONG;
 		CharSequence text;
-
+		
+//		if(instruction=="GET-STATE"){
+//			Handler myhandler = new Handler();
+//	        // run a thread to start the home screen
+//		      myhandler.postDelayed(new Runnable()
+//		      {
+//		          @Override
+//		          public void run() 
+//		          {
+//		          
+//		        	  testStateMsg();
+//		        	  
+//		          
+//		          }
+//		
+//		      }, 5000); 
+//			
+//		}else{
+//			Handler myhandler = new Handler();
+//	        // run a thread to start the home screen
+//		      myhandler.postDelayed(new Runnable()
+//		      {
+//		          @Override
+//		          public void run() 
+//		          {
+//		          
+//		        	  testCHAMMsg();
+//		        	  
+//		          
+//		          }
+//		
+//		      }, 5000); 
+//			
+//		}
 		sendSMS(phoneNum, instruction);
 
-		text = instruction + "has sent";
+		text = instruction + " has sent";
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
@@ -420,5 +525,61 @@ public class EquipementStateFragment extends Fragment {
 	private void sendSMS(String phoneNumber, String message) {
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, null, null);
+	}
+	public void testCHAMMsg() {
+		PopMessage pop_msg = new PopMessage();
+		pop_msg.projectIndex=pIndex;
+		pop_msg.equipementIndex=mPageNumber;
+		pop_msg.phoneNum= equipement.phoneNumber;
+		pop_msg.sender = equipement.phoneNumber;
+		// pop_msg.body =
+		// "OP(1-8)=HHHHHHHL IP(1-8)=OOOOOOOO CHAM(1-8)=00000000 IPAM(1-8)=00000000";
+		pop_msg.body = "CHS=NLLLLLLL\r\t C1=60\n C2=-24 C C3=24 F C4=24 % C5=25 %RH\f C6=25 pH\f C7=29 %O2 C8=23 mg/L";
+		pop_msg.timestamp = 1234;
+		pop_msg.msgType = PopMessage.CH_ALARM;
+		Intent intent = new Intent(rootContext, PopSMSActivity.class);
+
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		// pass Serializable object
+		intent.putExtra("msg", pop_msg);
+		Context context = rootContext.getApplicationContext();
+		CharSequence text = pop_msg.body + "has sent";
+		int duration = Toast.LENGTH_SHORT;
+
+		
+
+		// start UI
+		
+	      startActivity(intent);
+	}
+
+	public void testStateMsg() {
+		PopMessage pop_msg = new PopMessage();
+		pop_msg.projectIndex=pIndex;
+		pop_msg.equipementIndex=mPageNumber;
+		pop_msg.sender  = equipement.phoneNumber;
+		pop_msg.phoneNum= equipement.phoneNumber;
+		// pop_msg.body =
+		// "OP(1-8)=\nHHHHHHHL\nIP(1-8)=\nOOOOOOOO\nCHAM(1-8)=\n00000000\nIPAM(1-8)=\n00000000\n";
+		// pop_msg.body =
+		//"Switch input 1-8 (1:Close) 2:Open 3:Open 4:Open 5:Open 6:Open 7:Open 8:Open"
+		// "OP(1-8)= HHHHHHHL IP(1-8)= OCOCOOOO CHAM(1-8)= 10000000 IPAM(1-8)= 00000000 ";
+		pop_msg.body = "OP(1-8)= HHHHHHHL IP(1-8)= OCOCOCOC CHAM(1-8)= 10000000 IPAM(1-8)= 00000000 ";
+		pop_msg.timestamp = 1234;
+		pop_msg.msgType = PopMessage.SYS_STATE;
+		Intent intent = new Intent(rootContext, PopSMSActivity.class);
+
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		// pass Serializable object
+		intent.putExtra("msg", pop_msg);
+		Context context = rootContext.getApplicationContext();
+		CharSequence text = pop_msg.body + "has sent";
+		int duration = Toast.LENGTH_SHORT;
+
+		
+		// start UI
+	      startActivity(intent);
 	}
 }

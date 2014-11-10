@@ -19,9 +19,12 @@ public class PopMessage implements Serializable {
 	public String sender;
 	public String body;
 	public long timestamp;
+	public String phoneNum;
 	public String msgType;
       // getters and setters go here
       // ...
+	public int equipementIndex=0;
+	public int projectIndex=0;
  
      /**
        * Utility method

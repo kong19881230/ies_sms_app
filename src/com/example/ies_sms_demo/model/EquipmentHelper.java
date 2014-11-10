@@ -19,7 +19,7 @@ import android.util.Log;
 import com.example.ies_sms_demo.R;
 
 public class EquipmentHelper {
-	public static int[] photos={R.drawable.tank1,R.drawable.tank2,R.drawable.tank3,R.drawable.tank4,R.drawable.tank5,R.drawable.tank6};
+	//public static int[] photos={R.drawable.tank1,R.drawable.tank2,R.drawable.tank3,R.drawable.tank4,R.drawable.tank5,R.drawable.tank6};
 	public final static String TAG_PROJECT_LIST="project_list";
 //	  public static ArrayList<Equipment> getEquipementList(Resources resources){
 //		   InputStream is = resources.openRawResource(R.raw.data);

@@ -18,10 +18,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.ies_sms_demo.ItemAdapter.EquipementItemAdapter;
 import com.example.ies_sms_demo.LoginActivity.AttemptLogin;
+import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.http.JSONParser;
 import com.example.ies_sms_demo.model.Equipment;
 import com.example.ies_sms_demo.model.EquipmentHelper;
@@ -36,26 +39,36 @@ public class EquipementListActivity extends ListActivity {
 	    private static final String TAG_TOKEN = "token";
 	    private static final String TAG_MESSAGE = "message";
 	private static final String GET_EQUIPEMENT_URL = "http://uniquecode.net/job/ms/get_user_equipement.php";
+	private static final String PROJECT_PHOTO_URL="http://uniquecode.net/job/ms/photo/project/";
 	private EquipementItemAdapter e_adapter;
 	private ArrayList<Project> projects=new ArrayList<Project>();
-  
+	private ImageLoader imgLoader;
+	private ImageView photo;
 	private ArrayList<Equipment> equipements = new ArrayList<Equipment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       
         sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
         String projectListStr = sharedPref.getString(getString(R.string.project_list), "");
         projects= EquipmentHelper.getProjectList( projectListStr);
+        setContentView(R.layout.equipements);
+        photo =(ImageView)findViewById(R.id.photo);
         //Remove notification bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if(projects.size()>0){
 	        setTitle(projects.get(0).name_en);
 	        equipements=(ArrayList<Equipment>) projects.get(0).equipments;
-        }
-        setContentView(R.layout.equipements);
+	        imgLoader = new ImageLoader(getApplicationContext());
+	  
+	        if(projects.get(0).photo!=null &&!projects.get(0).photo.isEmpty()){
+	        	imgLoader.DisplayImage(PROJECT_PHOTO_URL+projects.get(0).photo, R.drawable.ic_action_refresh, photo);
+	        }
+	    }
+       
         getActionBar().setIcon(
         		   new ColorDrawable(getResources().getColor(android.R.color.transparent)));    
-      
+        
         e_adapter = new EquipementItemAdapter(this, R.id.text_view, equipements);
         setListAdapter(e_adapter);
         boolean isRefresh=getIntent().getBooleanExtra("isRefresh", false);
@@ -68,8 +81,9 @@ public class EquipementListActivity extends ListActivity {
     	
       
           Intent intent = new Intent(getApplicationContext(), EquipementSlideActivity.class);
-  
-          intent.putExtra("index", position);
+ 
+          intent.putExtra("eIndex", position);
+          intent.putExtra("pIndex", 0);
           startActivity(intent);
     }
    
@@ -86,7 +100,7 @@ public class EquipementListActivity extends ListActivity {
            pDialog = new ProgressDialog(EquipementListActivity.this);
            pDialog.setMessage("Attempting login...");
            pDialog.setIndeterminate(false);
-           pDialog.setCancelable(true);
+           pDialog.setCancelable(false);
            pDialog.show();
        }
        
@@ -141,12 +155,13 @@ public class EquipementListActivity extends ListActivity {
 					    	      
 			                   return json.getString(TAG_MESSAGE);
 			               }else{
-			            
+			            	   failure=true;
 				    	    	editor.commit();
 			                   Log.d("Login Failure!", json.getString(TAG_MESSAGE));
 			                   return json.getString(TAG_MESSAGE);      
 			               }
 	      	    	}else{
+	      	    		failure=true;
 	      	    		return "No Network Connection"; 
 	      	    	}
 	           } catch (JSONException e) {
@@ -161,9 +176,18 @@ public class EquipementListActivity extends ListActivity {
        @Override
        protected void onPostExecute(Object result) {
            // dismiss the dialog once product deleted
-    	   e_adapter.clear();
-    	   e_adapter.addAll(equipements);
-    	   e_adapter.notifyDataSetChanged();
+    	   if(!failure){
+	    	   e_adapter.clear();
+	    	   e_adapter.addAll(equipements);
+	    	   e_adapter.notifyDataSetChanged();
+	    	   if(projects.size()>0){
+	    		   imgLoader = new ImageLoader(getApplicationContext());
+	    		
+		   	        if(projects.get(0).photo!=null &&!projects.get(0).photo.isEmpty()){
+		   	        	imgLoader.DisplayImage(PROJECT_PHOTO_URL+projects.get(0).photo, R.drawable.ic_action_refresh, photo);
+		   	        }
+	    	   }
+    	   }
            pDialog.dismiss();
            if (result != null){
                Toast.makeText(EquipementListActivity.this, result.toString(), Toast.LENGTH_LONG).show();

@@ -83,7 +83,7 @@ public class LoginActivity extends ActionBarActivity {
            pDialog = new ProgressDialog(LoginActivity.this);
            pDialog.setMessage("Attempting login...");
            pDialog.setIndeterminate(false);
-           pDialog.setCancelable(true);
+           pDialog.setCancelable(false);
            pDialog.show();
        }
        

@@ -40,5 +40,5 @@ public class Machine  implements Serializable{
 	}
 	public String modelId;
 	public String type;
-	public List<MachineAttribute> machineAttributes;
+	public ArrayList<MachineAttribute> machineAttributes;
 }

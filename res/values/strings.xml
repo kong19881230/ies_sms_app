@@ -19,7 +19,8 @@
       <string name="action_next">Next</string>
     <string name="action_finish">Finish</string>
     <string name="action_previous">Previous</string>
-    <string name="action_setting">setting</string>
+    <string name="action_setting">Setting</string>
     <string name="action_remote">remote</string>
+     <string name="action_logout">Log Out</string>
     <string name="project_list">project_list</string>
 </resources>

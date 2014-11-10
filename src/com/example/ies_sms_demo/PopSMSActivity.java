@@ -1,6 +1,7 @@
 package com.example.ies_sms_demo;
 
 
+import com.example.ies_sms_demo.model.UpdateState;
 import com.example.ies_sms_demo.receiver.PopMessage;
 
 import android.app.ActionBar;
@@ -57,12 +58,13 @@ public class PopSMSActivity extends Activity {
 		            + body + "\n";
 		 
 		    // Display in Alert Dialog
+		    final PopMessage clone=msg;
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		    builder.setMessage(display)
 		    .setCancelable(false)
 		    .setPositiveButton("Open", new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int id) {
-		        	goMain();
+		        	goMain(clone);
 		        }
 		    })
 		    .setNegativeButton("Close", new DialogInterface.OnClickListener() {
@@ -81,9 +83,11 @@ public class PopSMSActivity extends Activity {
 		        e.printStackTrace();
 		    }
 		}
-	   private void goMain(){
+	   private void goMain(PopMessage msg){
 		   Intent intent = this.getIntent();
 			  intent.setClass(this, EquipementSlideActivity.class);
+			  intent.putExtra("eIndex", msg.equipementIndex);
+			  intent.putExtra("pIndex", msg.projectIndex);
 			  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
        	startActivity(intent);
        	this.finish();
@@ -108,6 +112,8 @@ public class PopSMSActivity extends Activity {
 //	        
 	    	
 	    	Intent resultIntent = new Intent(this, EquipementSlideActivity.class);
+	    	resultIntent.putExtra("eIndex", msg.equipementIndex);
+	    	resultIntent.putExtra("pIndex", msg.projectIndex);
 	    	TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 	    	// Adds the back stack
 	    	stackBuilder.addParentStack(EquipementSlideActivity.class);
@@ -172,22 +178,22 @@ public class PopSMSActivity extends Activity {
 	   public void saveData(PopMessage msg){
 	    	String state=msg.body;
 	    	SharedPreferences sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
-	    	  String updateState = sharedPref.getString(getString(R.string.update_status), "");
+	    	  String updateState = sharedPref.getString(getString(R.string.update_status)+"_"+msg.phoneNum, "");
 	    	SharedPreferences.Editor editor = sharedPref.edit();
 	    	if(msg!=null&&msg.msgType!=null&&editor!=null){
 		    	if(msg.msgType.equals(PopMessage.CH_ALARM)){
-		    		editor.putString(getString(R.string.ch_state), state);
+		    		editor.putString(getString(R.string.ch_state)+"_"+msg.phoneNum, state);
 		    		if(updateState.equals(UpdateState.GET_CH)){
-		    			editor.putString(getString(R.string.update_status),UpdateState.HAS_CH);
+		    			editor.putString(getString(R.string.update_status)+"_"+msg.phoneNum,UpdateState.HAS_CH);
 		    		}
 		    	}else if(msg.msgType.equals(PopMessage.SYS_STATE)){
-		    		editor.putString(getString(R.string.am_state), state);
-		    		editor.putString(getString(R.string.ipam_state), "");
+		    		editor.putString(getString(R.string.am_state)+"_"+msg.phoneNum, state);
+		    		editor.putString(getString(R.string.ipam_state)+"_"+msg.phoneNum, "");
 		    		if(updateState.equals(UpdateState.GET_STATE)){
-		    			editor.putString(getString(R.string.update_status),UpdateState.HAS_STATE);
+		    			editor.putString(getString(R.string.update_status)+"_"+msg.phoneNum,UpdateState.HAS_STATE);
 		    		}
 		    	}else if(msg.msgType.equals(PopMessage.IP_ALARM)){
-		    		editor.putString(getString(R.string.ipam_state), state);
+		    		editor.putString(getString(R.string.ipam_state)+"_"+msg.phoneNum, state);
 		    	}
 	    	}
 	    	editor.commit();

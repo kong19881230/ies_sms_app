@@ -4,21 +4,20 @@
     android:layout_height="match_parent"
     android:background="@color/gray_bg"
     android:orientation="vertical" >
+
   <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/frame_bg" >
+      android:layout_width="match_parent"
+      android:layout_height="175dp"
+      android:background="@color/black"
+       >
 
                 <ImageView
                     android:id="@+id/photo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/calorifier1" />
+                    android:layout_margin="1dp"
+                    />
             </FrameLayout>
    
 			<ListView

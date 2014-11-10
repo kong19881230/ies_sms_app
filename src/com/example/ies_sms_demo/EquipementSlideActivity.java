@@ -19,22 +19,25 @@ package com.example.ies_sms_demo;
 
 import java.util.ArrayList;
 
+import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.model.Equipment;
 import com.example.ies_sms_demo.model.EquipmentHelper;
 import com.example.ies_sms_demo.model.Project;
-import com.example.ies_sms_demo.observe.SettingActivity;
+import com.example.ies_sms_demo.SettingActivity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +45,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because {@link ViewPager}
@@ -59,7 +63,8 @@ public class EquipementSlideActivity extends FragmentActivity {
      * The number of pages (wizard steps) to show in this demo.
      */
     private static final int NUM_PAGES = 5;
-
+	public int pIndex;
+	public int eIndex;
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
@@ -73,7 +78,17 @@ public class EquipementSlideActivity extends FragmentActivity {
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private PagerAdapter mPagerAdapter;
-
+    @Override
+    public void onBackPressed() {
+    	return;
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+         if (keyCode == KeyEvent.KEYCODE_BACK) {
+         return false;
+         }
+         return super.onKeyDown(keyCode, event);    
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,22 +96,26 @@ public class EquipementSlideActivity extends FragmentActivity {
         sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
         String projectListStr = sharedPref.getString(getString(R.string.project_list), "");
         projects= EquipmentHelper.getProjectList(projectListStr);
+        getActionBar().setIcon(
+     		   new ColorDrawable(getResources().getColor(android.R.color.transparent))); 
+        pIndex=getIntent().getIntExtra("pIndex", 0);
         //Remove notification bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if(projects.size()>0){
 	        setTitle(projects.get(0).name_en);
-	        equipements=(ArrayList<Equipment>) projects.get(0).equipments;
+	        equipements=(ArrayList<Equipment>) projects.get(pIndex).equipments;
        
-	        int index=getIntent().getIntExtra("index", 0);
+		       eIndex=getIntent().getIntExtra("eIndex", 0);
+		       
 	        // Instantiate a ViewPager and a PagerAdapter.
-	        setTitle(equipements.get(index).refNo);
+	        setTitle(equipements.get(eIndex).refNo);
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 	        mPager = (ViewPager) findViewById(R.id.pager);
 	        next=(ImageView)findViewById(R.id.next);
 	        previous=(ImageView)findViewById(R.id.previous);
 	        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
 	        if(previous!=null){
-	        	previous.setVisibility(getVisibility(index > 0));
+	        	previous.setVisibility(getVisibility(eIndex > 0));
 	        	previous.setOnClickListener(new OnClickListener() {
 	
 	     			@Override
@@ -106,7 +125,7 @@ public class EquipementSlideActivity extends FragmentActivity {
 	        	});
 	        }
 	        if(next!=null){
-	        	next.setVisibility(getVisibility(index < mPagerAdapter.getCount() - 1));
+	        	next.setVisibility(getVisibility(eIndex < mPagerAdapter.getCount() - 1));
 	        	next.setOnClickListener(new OnClickListener() {
 	
 	     			@Override
@@ -117,7 +136,7 @@ public class EquipementSlideActivity extends FragmentActivity {
 	        	});
 	        }
 	        mPager.setAdapter(mPagerAdapter);
-	        mPager.setCurrentItem(index);
+	        mPager.setCurrentItem(eIndex);
 	        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 	            @Override
 	            public void onPageSelected(int position) {
@@ -148,8 +167,22 @@ public class EquipementSlideActivity extends FragmentActivity {
 
             case R.id.action_setting:
             	Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-
+            	int index=mPager.getCurrentItem();
+            	 intent.putExtra("Equipement", equipements.get(index));
+                 intent.putExtra("eIndex",index );
+                 intent.putExtra("pIndex", pIndex);
                 startActivity(intent);
+                return true;
+            case R.id.action_logout:
+            	Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+		    	SharedPreferences sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = sharedPref.edit();
+		    	editor.putString(getString(R.string.user_name), "");
+		    	editor.putString(getString(R.string.project_list), "");
+		    	ImageLoader image=new ImageLoader(getApplicationContext());
+		    	image.clearCache();
+		    	editor.commit();
+		        startActivity(intent1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -175,7 +208,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return EquipementStateFragment.create(position,getApplicationContext(),equipements.get(position));
+        return EquipementStateFragment.create(position,pIndex,getApplicationContext(),equipements.get(position));
     }
 
     @Override
