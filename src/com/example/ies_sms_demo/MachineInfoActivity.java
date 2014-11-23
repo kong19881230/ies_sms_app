@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import com.example.ies_sms_demo.ItemAdapter.EquipementItemAdapter;
 import com.example.ies_sms_demo.ItemAdapter.MachineAttributeAdapter;
 import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.model.Equipment;
-import com.example.ies_sms_demo.model.Machine;
 
 
 public class MachineInfoActivity extends ListActivity {
@@ -30,21 +28,21 @@ public class MachineInfoActivity extends ListActivity {
         //Remove notification bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Equipment equipment= (Equipment) getIntent().getSerializableExtra("Equipement");
-        Machine machine=equipment.machine;
+        
         setContentView(R.layout.machine_info);
-        setTitle(machine.modelId);
+        setTitle(equipment.modelId);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setIcon(
      		   new ColorDrawable(getResources().getColor(android.R.color.transparent))); 
         ImageView img = (ImageView) findViewById(R.id.photo);
 	   
         TextView type = (TextView) findViewById(R.id.type);
-        m_adapter = new MachineAttributeAdapter(this, R.id.text_view, machine.machineAttributes);
+        m_adapter = new MachineAttributeAdapter(this, R.id.text_view, equipment.equipmentAttributes);
         setListAdapter(m_adapter);
 		// check to see if each individual textview is null.
 		// if not, assign some text!
 		if (type != null){
-			type.setText(machine.type);
+			type.setText(equipment.type);
 		}
 	    if(img!=null){
 	    	 ImageLoader imgLoader = new ImageLoader(getApplicationContext());

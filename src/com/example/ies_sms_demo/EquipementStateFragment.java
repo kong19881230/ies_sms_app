@@ -18,7 +18,6 @@ package com.example.ies_sms_demo;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Timer;
 
 import android.app.Fragment;
@@ -29,17 +28,14 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ies_sms_demo.ItemAdapter.AlarmIndicatorItemAdapter;
@@ -48,7 +44,6 @@ import com.example.ies_sms_demo.ItemAdapter.TextIndicatorItemAdapter;
 import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.model.Equipment;
 import com.example.ies_sms_demo.model.Indicator;
-import com.example.ies_sms_demo.model.Machine;
 import com.example.ies_sms_demo.model.UpdateState;
 import com.example.ies_sms_demo.receiver.PopMessage;
 
@@ -124,7 +119,7 @@ public class EquipementStateFragment extends Fragment {
 		// TextView t=(TextView)rootView.findViewById(R.id.msg);
 		// t.setText(stateStr);
 		 img = (ImageView) rootView.findViewById(R.id.photo);
-	       if(img!=null&&equipement!=null &&equipement.machine!=null){
+	       if(img!=null&&equipement!=null){
 	        img.setOnClickListener(new OnClickListener() {
 	            public void onClick(View v) {
 	                  Intent intent = new Intent(rootContext, MachineInfoActivity.class);
@@ -179,7 +174,9 @@ public class EquipementStateFragment extends Fragment {
 					}
 				}
 			});
-
+			if(equipement.com_method.equals(Equipment.WEB)){
+				update.setEnabled(false);
+			}
 			if (updateState == null) {
 				updateState = UpdateState.IDLE;
 			}
@@ -215,6 +212,9 @@ public class EquipementStateFragment extends Fragment {
 				showLoadingBar();
 				
 			}
+		}
+		if(equipement.com_method.equals(Equipment.WEB)){
+			update.setEnabled(false);
 		}
 		// TextView t=(TextView)rootView.findViewById(R.id.msg);
 		// t.setText(stateStr);
@@ -456,6 +456,7 @@ public class EquipementStateFragment extends Fragment {
 	}
 
 	public void getCH(View v) {
+		
 		sendRequest("GET-CH");
 
 	}
@@ -466,51 +467,55 @@ public class EquipementStateFragment extends Fragment {
 	}
 
 	private void sendRequest(String instruction) {
-	
+		if(equipement.com_method.equals(Equipment.SMS)){
 		String phoneNum = equipement.phoneNumber;
 		Context context = rootContext.getApplicationContext();
 		int duration = Toast.LENGTH_LONG;
 		CharSequence text;
 		
-//		if(instruction=="GET-STATE"){
-//			Handler myhandler = new Handler();
-//	        // run a thread to start the home screen
-//		      myhandler.postDelayed(new Runnable()
-//		      {
-//		          @Override
-//		          public void run() 
-//		          {
-//		          
-//		        	  testStateMsg();
-//		        	  
-//		          
-//		          }
-//		
-//		      }, 5000); 
-//			
-//		}else{
-//			Handler myhandler = new Handler();
-//	        // run a thread to start the home screen
-//		      myhandler.postDelayed(new Runnable()
-//		      {
-//		          @Override
-//		          public void run() 
-//		          {
-//		          
-//		        	  testCHAMMsg();
-//		        	  
-//		          
-//		          }
-//		
-//		      }, 5000); 
-//			
-//		}
+
 		sendSMS(phoneNum, instruction);
 
 		text = instruction + " has sent";
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
+		}else if(equipement.com_method.equals(Equipment.WEB)){
+			
+		}
+//		if(instruction=="GET-STATE"){
+//		Handler myhandler = new Handler();
+//        // run a thread to start the home screen
+//	      myhandler.postDelayed(new Runnable()
+//	      {
+//	          @Override
+//	          public void run() 
+//	          {
+//	          
+//	        	  testStateMsg();
+//	        	  
+//	          
+//	          }
+//	
+//	      }, 5000); 
+//		
+//	}else{
+//		Handler myhandler = new Handler();
+//        // run a thread to start the home screen
+//	      myhandler.postDelayed(new Runnable()
+//	      {
+//	          @Override
+//	          public void run() 
+//	          {
+//	          
+//	        	  testCHAMMsg();
+//	        	  
+//	          
+//	          }
+//	
+//	      }, 5000); 
+//		
+//	}
 
 	}
 

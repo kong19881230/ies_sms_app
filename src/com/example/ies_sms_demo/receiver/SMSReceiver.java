@@ -53,7 +53,7 @@ public class SMSReceiver extends BroadcastReceiver {
 						for (int i = 0; i < equipments.size(); i++) {
 							String phoneNum = equipments.get(i).phoneNumber;
 
-							if (phoneNum != null
+							if (equipments.get(i).com_method.equals(Equipment.SMS)&&phoneNum != null
 									&& pop_msg.sender.contains(phoneNum)) {
 								pop_msg.phoneNum = phoneNum;
 								pop_msg.projectIndex = j;

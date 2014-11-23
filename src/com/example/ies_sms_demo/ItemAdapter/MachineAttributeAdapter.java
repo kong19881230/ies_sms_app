@@ -7,7 +7,7 @@ import com.example.ies_sms_demo.R;
 import com.example.ies_sms_demo.R.id;
 import com.example.ies_sms_demo.R.layout;
 import com.example.ies_sms_demo.model.Equipment;
-import com.example.ies_sms_demo.model.MachineAttribute;
+import com.example.ies_sms_demo.model.EquipmentAttribute;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,10 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MachineAttributeAdapter extends ArrayAdapter<MachineAttribute> {
-	private ArrayList<MachineAttribute> objects;
+public class MachineAttributeAdapter extends ArrayAdapter<EquipmentAttribute> {
+	private ArrayList<EquipmentAttribute> objects;
 	public MachineAttributeAdapter(Context context, int textViewResourceId,
-			ArrayList<MachineAttribute> objects) {
+			ArrayList<EquipmentAttribute> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
 	}
@@ -44,7 +44,7 @@ public class MachineAttributeAdapter extends ArrayAdapter<MachineAttribute> {
 		 * 
 		 * Therefore, i refers to the current Item object.
 		 */
-		MachineAttribute i = objects.get(position);
+		EquipmentAttribute i = objects.get(position);
 
 		if (i != null) {
 

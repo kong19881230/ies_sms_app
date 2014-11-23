@@ -71,7 +71,7 @@ public class EquipementItemAdapter extends ArrayAdapter<Equipment> {
 				refNo.setText("Ref No: "+i.refNo);
 			}
 			if (type != null){
-				type.setText(i.machine.modelId);
+				type.setText(i.modelId);
 			}
 		
 		}
