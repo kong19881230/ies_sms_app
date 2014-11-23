@@ -28,14 +28,17 @@ public class Equipment  implements Serializable {
 	public final String TAG_GALLERY="gallery";
 	public final String TAG_INDICATORS="indicators";
 	public final String TAG_COM_METHOD="com_method";
+	public final String TAG_ID="equipment_id";
+	public final String TAG_NOTE="note";
 	public Equipment(JSONObject json){
 		  try {
 			  refNo=json.getString(TAG_REF_NO);
 			  phoneNumber=json.getString(TAG_PHONE_NUMBER);
-			 
+			  id=json.getInt(TAG_ID);
 			  type=json.getString(TAG_TYPE);
 				modelId=json.getString(TAG_MODEL_ID);
 				com_method=json.getString(TAG_COM_METHOD);
+				note=json.getString(TAG_NOTE);
 				String galleryStr=json.getString(TAG_GALLERY);
 				gallery=new ArrayList<String>();
 			       if(!galleryStr.isEmpty()){
@@ -63,7 +66,7 @@ public class Equipment  implements Serializable {
 	          e.printStackTrace();
 	      }
 		}
-	
+	public int id;
 	public String com_method;
 	public ArrayList<String> gallery;
 	public String modelId;

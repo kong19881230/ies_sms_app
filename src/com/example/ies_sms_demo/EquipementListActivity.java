@@ -154,7 +154,12 @@ public class EquipementListActivity extends ListActivity {
 					    	        }
 					    	      
 			                   return json.getString(TAG_MESSAGE);
-			               }else{
+			               }else if(success==400){
+			            	   Intent i = new Intent(EquipementListActivity.this, LoginActivity.class);
+			                   finish();
+			                   startActivity(i);
+			               }
+			               else{
 			            	   failure=true;
 				    	    	editor.commit();
 			                   Log.d("Login Failure!", json.getString(TAG_MESSAGE));

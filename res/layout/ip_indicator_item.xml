@@ -20,6 +20,8 @@
 			         android:layout_marginTop="5dp"
 			         android:src="@drawable/safe_icon" />
 
+			   
+
                     <TextView
                         android:id="@+id/text"
                         android:layout_width="match_parent"

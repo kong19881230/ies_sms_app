@@ -3,7 +3,7 @@
     package="com.example.ies_sms_demo"
      android:installLocation="preferExternal"
     android:versionCode="1"
-    android:versionName="2.0" >
+    android:versionName="2.1" >
 
     <uses-sdk
         android:minSdkVersion="13"

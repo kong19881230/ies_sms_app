@@ -19,7 +19,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/black" />
 
                 <View
                     style="@style/Divider"
@@ -27,13 +28,14 @@
                     android:background="@color/gray_bg" />
 
                   <TextView
-                    android:id="@+id/value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                      android:id="@+id/value"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="5dp"
+                      android:layout_marginLeft="8dp"
+                      android:layout_marginTop="5dp"
+                      android:textAppearance="?android:attr/textAppearanceMedium"
+                      android:textColor="@color/black" />
 
             </LinearLayout>
 
