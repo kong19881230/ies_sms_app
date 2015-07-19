@@ -80,15 +80,13 @@ public class EquipementSlideActivity extends FragmentActivity {
     private PagerAdapter mPagerAdapter;
     @Override
     public void onBackPressed() {
+        	  	 Intent intent = new Intent(getApplicationContext(), EquipementListActivity.class);
+    	       
+    	       startActivity(intent);
+    	 
     	return;
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-         if (keyCode == KeyEvent.KEYCODE_BACK) {
-         return false;
-         }
-         return super.onKeyDown(keyCode, event);    
-    }
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

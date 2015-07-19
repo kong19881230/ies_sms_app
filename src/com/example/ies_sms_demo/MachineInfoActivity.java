@@ -40,7 +40,7 @@ public class MachineInfoActivity extends ListActivity {
 	JSONParser jsonParser = new JSONParser();
 	public final String TAG_EQUIPEMENT_NOTE="equipment_note";
 	
-	public SharedPreferences sharedPref;
+	
 	  private ProgressDialog pDialog;
 	    private static final String TAG_SUCCESS = "status";
 	    private static final String TAG_TOKEN = "token";
@@ -48,14 +48,16 @@ public class MachineInfoActivity extends ListActivity {
 
 		private static final String GET_EQUIPEMENT_URL = "http://uniquecode.net/job/ms/get_user_equipement.php";
 	private static final String ADD_NOTE_URL = "http://uniquecode.net/job/ms/add_note.php";
-	public int pIndex;
-	public int eIndex;
+	
 	public EditText newNote;
 	public TextView note;
 	private GalleryItemAdapter m_adapter;
 	public ListView photoList;
 	public MachineAttributeAdapter attributeAdapter;
+	public int pIndex;
+	public int eIndex;
 	public Equipment equipment;
+	public SharedPreferences sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,15 @@ public class MachineInfoActivity extends ListActivity {
         getActionBar().setIcon(
      		   new ColorDrawable(getResources().getColor(android.R.color.transparent))); 
         ImageView img = (ImageView) findViewById(R.id.photo);
-	   
+    	ImageLoader imgLoader = new ImageLoader(getApplicationContext());
+		  
+	    if(img!=null){
+	    	 
+		        if(equipment.photo!=null &&!equipment.photo.isEmpty()){
+		        	imgLoader.DisplayImage(EquipementItemAdapter.EQUIPMENT_PHOTO_URL+equipment.photo, R.drawable.ic_action_refresh, img);
+		        }
+	       
+	     }
         TextView type = (TextView) findViewById(R.id.type);
         m_adapter=new GalleryItemAdapter(this, R.id.photo_list_text_view, equipment.gallery);
         setListAdapter(m_adapter);
@@ -85,15 +95,7 @@ public class MachineInfoActivity extends ListActivity {
 		if (type != null){
 			type.setText(equipment.type);
 		}
-		ImageLoader imgLoader = new ImageLoader(getApplicationContext());
-		  
-	    if(img!=null){
-	    	 
-		        if(equipment.photo!=null &&!equipment.photo.isEmpty()){
-		        	imgLoader.DisplayImage(EquipementItemAdapter.EQUIPMENT_PHOTO_URL+equipment.photo, R.drawable.ic_action_refresh, img);
-		        }
-	       
-	     }
+	
 	    photoList=(ListView)findViewById(R.id.photo_list);
 	    
 	    attributeAdapter= new MachineAttributeAdapter(getApplicationContext(), R.id.text_view, equipment.equipmentAttributes);

@@ -28,4 +28,10 @@ public class EquipmentAttribute implements Serializable{
 			e.printStackTrace();
 		}
 	}
+	public EquipmentAttribute(String name,String value){
+		name_cn=name;
+			name_en=name;
+			this.value=value;
+		
+	}
 }

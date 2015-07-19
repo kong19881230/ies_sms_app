@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
   <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-             android:layout_height="200dp"
-              android:background="@color/black"
-            >
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/gray_bg" >
 
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/textbox_bg" >
                 <ImageView
                     android:id="@+id/gallery"
-                    android:layout_width="match_parent"
-                    android:layout_height="198dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="230dp"
                     android:src="@drawable/calorifier" />
-
+</FrameLayout>
         </FrameLayout>

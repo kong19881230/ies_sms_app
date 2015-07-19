@@ -122,7 +122,7 @@ public class EquipementStateFragment extends Fragment {
 	       if(img!=null&&equipement!=null){
 	        img.setOnClickListener(new OnClickListener() {
 	            public void onClick(View v) {
-	                  Intent intent = new Intent(rootContext, MachineInfoActivity.class);
+	                  Intent intent = new Intent(rootContext, EquipementInfoAcitivity.class);
 	                  intent.putExtra("Equipement", equipement);
 	                  intent.putExtra("eIndex",mPageNumber );
 	                  intent.putExtra("pIndex", pIndex);
@@ -174,9 +174,7 @@ public class EquipementStateFragment extends Fragment {
 					}
 				}
 			});
-			if(equipement.com_method.equals(Equipment.WEB)){
-				update.setEnabled(false);
-			}
+		
 			if (updateState == null) {
 				updateState = UpdateState.IDLE;
 			}
@@ -213,8 +211,8 @@ public class EquipementStateFragment extends Fragment {
 				
 			}
 		}
-		if(equipement.com_method.equals(Equipment.WEB)){
-			update.setEnabled(false);
+		if(equipement!=null&&equipement.com_method!=null&& equipement.com_method.equals(Equipment.WEB)){
+			update.setVisibility(View.GONE);
 		}
 		// TextView t=(TextView)rootView.findViewById(R.id.msg);
 		// t.setText(stateStr);

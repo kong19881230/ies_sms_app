@@ -24,6 +24,12 @@ import android.support.v4.app.TaskStackBuilder;
 public class PopSMSActivity extends Activity {
 	  public static final int NOTIFICATION_ID = 1;
 	  /** Called when the activity is first created. */
+	  public  PopMessage msg;
+	  
+	  @Override
+	  public void onBackPressed() {
+		  goMain(msg);
+	  }
 	   @Override
 	   public void onCreate(Bundle savedInstanceState) {
 	       super.onCreate(savedInstanceState);
@@ -37,7 +43,7 @@ public class PopSMSActivity extends Activity {
 	       // retrieve Serializable sms message object
 	       // by the key "msg" used to pass it
 	       Intent in = this.getIntent();
-	       PopMessage msg = (PopMessage) in.getSerializableExtra("msg");
+	        msg = (PopMessage) in.getSerializableExtra("msg");
 	       
 //	        Case where we launch the app to test the UI
 //	        i.e. no incoming SMS

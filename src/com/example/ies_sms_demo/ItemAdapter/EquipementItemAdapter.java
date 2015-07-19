@@ -3,6 +3,7 @@ package com.example.ies_sms_demo.ItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.ies_sms_demo.PhotoActivity;
 import com.example.ies_sms_demo.R;
 import com.example.ies_sms_demo.R.drawable;
 import com.example.ies_sms_demo.R.id;
@@ -11,8 +12,10 @@ import com.example.ies_sms_demo.downloader.ImageLoader;
 import com.example.ies_sms_demo.model.Equipment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -63,7 +66,7 @@ public class EquipementItemAdapter extends ArrayAdapter<Equipment> {
 		        if(i.photo!=null &&!i.photo.isEmpty()){
 		        	imgLoader.DisplayImage(EQUIPMENT_PHOTO_URL+i.photo, R.drawable.ic_action_refresh, photo);
 		        }
-	
+		    	
 			}
 			// check to see if each individual textview is null.
 			// if not, assign some text!

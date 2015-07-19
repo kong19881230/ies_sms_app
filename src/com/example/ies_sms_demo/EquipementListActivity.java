@@ -16,6 +16,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,7 +89,34 @@ public class EquipementListActivity extends ListActivity {
           intent.putExtra("pIndex", 0);
           startActivity(intent);
     }
-   
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+
+            case R.id.action_logout:
+            	Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+		    	SharedPreferences sharedPref = getSharedPreferences("share_data",Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = sharedPref.edit();
+		    	editor.putString(getString(R.string.user_name), "");
+		    	editor.putString(getString(R.string.project_list), "");
+		    	ImageLoader image=new ImageLoader(getApplicationContext());
+		    	image.clearCache();
+		    	editor.commit();
+		        startActivity(intent1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
   class GetUserEquipement extends AsyncTask {
 
         /**

@@ -23,4 +23,10 @@
     <string name="action_remote">remote</string>
      <string name="action_logout">Log Out</string>
     <string name="project_list">project_list</string>
+    
+    <string name="etitle_1">Gallery</string>
+    
+    <string name="etitle_2">Info</string>
+    
+    <string name="etitle_3">Note</string>
 </resources>

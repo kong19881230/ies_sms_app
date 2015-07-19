@@ -1,0 +1,81 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_bg" >
+  <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+              
+
+		  <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                  android:layout_marginBottom="10dp"
+                android:background="@drawable/textbox_bg"
+                android:orientation="vertical" >
+	  <TextView
+	      android:id="@+id/note_title"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:layout_margin="5dp"
+	      android:text="Note"
+	      android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <View
+                    style="@style/Divider"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_bg" />
+
+               
+
+                  <TextView
+                    android:id="@+id/note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                     	  </LinearLayout>
+  <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/textbox_bg"
+                android:orientation="vertical" >
+                  <EditText
+                      android:id="@+id/new_note"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:ems="10"
+                       android:hint="New Note"
+                      android:inputType="textMultiLine" >
+
+                  </EditText>
+				  <Button
+                android:id="@+id/add_note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/update_btn"
+                android:paddingLeft="20dp"
+                                android:text="Add Note"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+       	  </LinearLayout>
+	
+	</LinearLayout></ScrollView></FrameLayout>
